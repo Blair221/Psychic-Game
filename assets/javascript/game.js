@@ -15,24 +15,16 @@ var lossesText = document.getElementById("losses-text");
 var guessesText = document.getElementById("guesses-text");
 var mealText = document.querySelector("#meal-text");
 console.log(directionText.textContent);
-var today = new Date();
-var timeDay = today.getHours();
-var welcome;
-if (timeDay > 18) {
-    welcome = "The computer didn't have dinner";
-} else if (hourNow > 12) {
-    welcome = "The computer lost his lunch";
-} else if (hourNow > 0) {
-    welcome = "The computer hasn't had breakfast";
-} else {
-    welcome = "Greetings!"
+var compGuess = compChoices[Math.floor(Math.random() * compChoices.length)];
+var resetCompGuess = function () {
+    compGuess = compChoices[Math.floor(Math.random() * compChoices.length)];
 }
-mealText.textContent = welcome;
+
 document.onkeyup = function (event) {
     var userGuess = event.key;
-    var compGuess = compChoices[Math.floor(Math.random() * compChoices.length)];
+    
     alert("you pressed " + userGuess);
-    alert("the computer chose " + compGuess);
+    
     if (userGuess !== compGuess) {
         guesses--;
         playerGuesses = playerGuesses + userGuess + ",";
@@ -40,11 +32,14 @@ document.onkeyup = function (event) {
     if (userGuess === compGuess) {
         wins++;
         playerGuesses = [];
+        resetCompGuess();
     }
     if (guesses === 0) {
         losses++;
         guesses = 7;
         playerGuesses = [];
+        alert("The Computer was thinking of " + compGuess);
+        resetCompGuess();
     }
     userGuessText.textContent = "Letters Guessed: " + playerGuesses;
     winsText.textContent = "Wins: " + wins;
